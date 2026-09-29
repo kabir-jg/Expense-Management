@@ -1,0 +1,6 @@
+@ExpenseManagement.Api_HostAddress = http://localhost:5258
+
+GET {{ExpenseManagement.Api_HostAddress}}/
+Accept: application/json
+
+###
