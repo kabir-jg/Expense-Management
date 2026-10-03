@@ -1,0 +1,95 @@
+﻿using System.Data;
+using Dapper;
+using ExpenseManagement.Api.Domain.Entities;
+using ExpenseManagement.Api.Infrastructure.Persistence;
+using ExpenseManagement.Api.Infrastructure.Repositories.Interfaces;
+
+namespace ExpenseManagement.Api.Infrastructure.Repositories;
+
+public class EmployeeRepository : IEmployeeRepository
+{
+    private readonly IDbConnection _dbConnection;
+    private readonly IUnitOfWork _unitOfWork;
+    public EmployeeRepository(IDbConnection dbConnection, IUnitOfWork unitOfWork)
+    {
+        _dbConnection = dbConnection;
+        _unitOfWork = unitOfWork;
+    }
+    
+    public async Task<Employee> CreateEmployeeAsync(Employee employee)
+    {
+      var sql = """
+                insert into 
+                Employees
+                (
+                 FirstName,
+                 LastName,
+                 Email,
+                 PhoneNumber,
+                 Address,
+                    City,
+                    State,
+                    ZipCode,
+                    Country,
+                    DateOfBirth,
+                    Salary,
+                    Position,
+                    DepartmentId,
+                    IsActive,
+                    CreatedAt,
+                    UpdatedAt,
+                    JoiningDate
+                 )
+                output inserted.Id
+                values (
+                        @FirstName,
+                        @LastName,
+                        @Email,
+                        @PhoneNumber,
+                        @Address,
+                        @City,
+                        @State,
+                        @ZipCode,
+                        @Country,
+                        @DateOfBirth,
+                        @Salary,
+                        @Position,
+                        @DepartmentId,
+                        @IsActive,
+                        @CreatedAt,
+                        @UpdatedAt,
+                        @JoiningDate
+                );
+                """;
+      
+      var employeeId = await _dbConnection.QuerySingleAsync<int>(
+          sql,
+          new
+          {
+              employee.FirstName,
+              employee.LastName,
+              employee.Email,
+              employee.PhoneNumber,
+              employee.Address,
+              employee.City,
+              employee.State,
+              employee.ZipCode,
+              employee.Country,
+
+              DateOfBirth = employee.DateOfBirth.ToDateTime(TimeOnly.MinValue),
+
+              employee.Salary,
+              employee.Position,
+              employee.DepartmentId,
+              employee.IsActive,
+              employee.CreatedAt,
+              employee.UpdatedAt,
+
+              JoiningDate = employee.JoiningDate.ToDateTime(TimeOnly.MinValue)
+          },
+          transaction: _unitOfWork.Transaction
+      );
+        employee.Id = employeeId;
+        return employee;
+    }
+}

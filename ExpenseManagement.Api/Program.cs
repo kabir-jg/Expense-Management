@@ -1,10 +1,51 @@
+using System.Data;
+using ExpenseManagement.Api.Application.Mappings;
+using ExpenseManagement.Api.Domain.Entities;
+using ExpenseManagement.Api.Infrastructure.Persistence;
+using ExpenseManagement.Api.Infrastructure.Repositories;
+using ExpenseManagement.Api.Infrastructure.Repositories.Interfaces;
+using Mapster;
+using MapsterMapper;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Data.SqlClient;
+using Scalar.AspNetCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+
+builder.Services.AddMediatR(cfg =>
+{
+    cfg.RegisterServicesFromAssemblies(typeof(Program).Assembly);
+});
+
+// Mapster
+MapsterConfig.RegisterMappings();
+
+builder.Services.AddSingleton(
+    TypeAdapterConfig.GlobalSettings);
+builder.Services.AddScoped<IMapper, ServiceMapper>();
+
+// DB
+builder.Services.AddScoped<IDbConnection>(sp =>
+{
+    var configuration = sp.GetRequiredService<IConfiguration>();
+
+    var connectionString =
+        configuration.GetConnectionString("DefaultConnection");
+
+    return new SqlConnection(connectionString);
+});
 
 var app = builder.Build();
 
@@ -12,6 +53,7 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.MapScalarApiReference();
 }
 
 app.UseHttpsRedirection();

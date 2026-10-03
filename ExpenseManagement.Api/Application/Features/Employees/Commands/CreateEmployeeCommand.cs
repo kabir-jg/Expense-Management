@@ -1,8 +1,11 @@
-﻿namespace ExpenseManagement.Api.Domain.Entities;
+﻿using ExpenseManagement.Api.Application.DTOs;
+using MediatR;
 
-public class Employee
+namespace ExpenseManagement.Api.Application.Features.Employee.Commands;
+
+
+public class CreateEmployeeCommand : IRequest<EmployeeDTO>
 {
-    public int Id { get; set; }
     public required string FirstName { get; set; }
     public required string LastName { get; set; }
     public required string Email { get; set; }
@@ -13,11 +16,9 @@ public class Employee
     public required string ZipCode { get; set; }
     public required string Country { get; set; }
     public DateOnly DateOfBirth { get; set; }
-    public decimal? Salary { get; set; }
-    public string? Position { get; set; }
-    public int? DepartmentId { get; set; }
-    public bool IsActive { get; set; } = true;
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-    public DateTime? UpdatedAt { get; set; } 
+    public decimal Salary { get; set; }
+    public required string Position { get; set; }
+    public int DepartmentId { get; set; }
     public DateOnly JoiningDate { get; set; }
+    public required string Password { get; set; }
 }

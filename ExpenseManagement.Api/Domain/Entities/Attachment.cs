@@ -3,8 +3,8 @@
 public class Attachment
 {
     public int Id { get; set; }
-    public string FileName { get; set; }
-    public string FileUrl { get; set; }
+    public required string  FileName { get; set; }
+    public required string FileUrl { get; set; }
     public DateTime UploadedAt { get; set; }
     public int ExpenseId { get; set; }
 }

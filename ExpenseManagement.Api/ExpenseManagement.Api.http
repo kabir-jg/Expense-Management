@@ -1,6 +1,25 @@
 @ExpenseManagement.Api_HostAddress = http://localhost:5258
 
-GET {{ExpenseManagement.Api_HostAddress}}/
+POST {{ExpenseManagement.Api_HostAddress}}/api/employee
 Accept: application/json
+Content-Type: application/json
+
+{
+  "firstName": "John",
+  "lastName": "Doe",
+  "email": "john.doe@example.com",
+  "phoneNumber": "+8801712345678",
+  "address": "123 Main Street",
+  "city": "Dhaka",
+  "state": "Dhaka",
+  "zipCode": "1205",
+  "country": "Bangladesh",
+  "dateOfBirth": "1995-06-15",
+  "salary": 75000.00,
+  "position": "Software Engineer",
+  "departmentId": 1,
+  "joiningDate": "2026-10-03",
+  "password": "Test@12345"
+}
 
 ###
