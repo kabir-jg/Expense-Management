@@ -1,4 +1,5 @@
 using System.Data;
+using ExpenseManagement.Api.Application.Common.Behaviors;
 using ExpenseManagement.Api.Application.Mappings;
 using ExpenseManagement.Api.Infrastructure.Repositories.Interfaces;
 using ExpenseManagement.Api.Domain.Entities;
@@ -10,6 +11,7 @@ using MapsterMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Data.SqlClient;
 using Scalar.AspNetCore;
+using FluentValidation;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,7 +31,12 @@ builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 builder.Services.AddMediatR(cfg =>
 {
     cfg.RegisterServicesFromAssemblies(typeof(Program).Assembly);
+    cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
 });
+
+// FluentValidation
+builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
+
 
 // Mapster
 MapsterConfig.RegisterMappings();
