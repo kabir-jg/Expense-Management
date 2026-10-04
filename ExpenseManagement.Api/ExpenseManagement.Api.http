@@ -5,15 +5,15 @@ Accept: application/json
 Content-Type: application/json
 
 {
-  "firstName": "John",
+  "firstName": "jewel",
   "lastName": "Doe",
-  "email": "john.doe@example.com",
-  "phoneNumber": "+8801712345678",
+  "email": "jewel.doe@example.com",
+  "phoneNumber": "+8801712345685",
   "address": "123 Main Street",
-  "city": "Dhaka",
-  "state": "Dhaka",
-  "zipCode": "1205",
-  "country": "Bangladesh",
+  "city": "Denmark",
+  "state": "Copenhagen",
+  "zipCode": "15205",
+  "country": "Denmark",
   "dateOfBirth": "1995-06-15",
   "salary": 75000.00,
   "position": "Software Engineer",

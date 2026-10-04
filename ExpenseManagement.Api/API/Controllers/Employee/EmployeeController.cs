@@ -1,4 +1,5 @@
-﻿using ExpenseManagement.Api.Application.Features.Employee.Commands;
+﻿using ExpenseManagement.Api.Application.Common.Models;
+using ExpenseManagement.Api.Application.Features.Employee.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,20 +18,8 @@ public class EmployeeController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateEmployee(CreateEmployeeCommand command)
     {
-        try
-        {
-            var result = await _mediator.Send(command);
-            return Ok(result);
-        }
-        catch(Exception ex)
-        {
-            return StatusCode(
-                StatusCodes.Status500InternalServerError,
-                new
-                {
-                    message = "An error occurred while creating the employee.",
-                    error = ex.Message
-                });
-        }
+        var result = await _mediator.Send(command);
+        var response = ApiResponse<object>.SuccessResponse("Employee created successfully", result);    
+        return CreatedAtAction(nameof(CreateEmployee), response);
     }
 }

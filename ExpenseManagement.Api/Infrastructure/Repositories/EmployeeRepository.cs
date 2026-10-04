@@ -16,6 +16,20 @@ public class EmployeeRepository : IEmployeeRepository
         _unitOfWork = unitOfWork;
     }
     
+    public async Task<bool> ExistsByEmailAsync(string email)
+    {
+        var sql = "SELECT COUNT(1) FROM Employees WHERE Email = @Email";
+        var count = await _dbConnection.ExecuteScalarAsync<int>(sql, new { Email = email }, transaction: _unitOfWork.Transaction);
+        return count > 0;
+    }
+
+    public async Task<bool> ExistsByPhoneNumberAsync(string phoneNumber)
+    {
+        var sql = "SELECT COUNT(1) FROM Employees WHERE PhoneNumber = @PhoneNumber";
+        var count = await _dbConnection.ExecuteScalarAsync<int>(sql, new { PhoneNumber = phoneNumber }, transaction: _unitOfWork.Transaction);
+        return count > 0;
+    }
+    
     public async Task<Employee> CreateEmployeeAsync(Employee employee)
     {
       var sql = """

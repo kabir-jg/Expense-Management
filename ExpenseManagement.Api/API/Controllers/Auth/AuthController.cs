@@ -1,4 +1,5 @@
-﻿using ExpenseManagement.Api.Application.DTOs;
+﻿using ExpenseManagement.Api.Application.Common.Models;
+using ExpenseManagement.Api.Application.DTOs;
 using ExpenseManagement.Api.Application.Features.Auth.Commands.Login;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -14,18 +15,13 @@ public class AuthController: ControllerBase
     {
         _mediator = mediator;
     }
+    
     [HttpPost("login")]
     public async Task<ActionResult<AuthCredentialDTO>> Login(LoginCommand command)
     {
-        try
-        {
-            var result = await _mediator.Send(command);
+        var result = await _mediator.Send(command);
+        var response = ApiResponse<AuthCredentialDTO>.SuccessResponse("Login successful", result);  
 
-            return Ok(result);
-        }
-        catch (UnauthorizedAccessException ex)
-        {
-            return Unauthorized(ex.Message);
-        }
+        return Ok(response);
     }
 }

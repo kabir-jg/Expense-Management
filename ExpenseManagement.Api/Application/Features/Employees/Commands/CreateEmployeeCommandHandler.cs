@@ -1,4 +1,5 @@
-﻿using ExpenseManagement.Api.Application.DTOs;
+﻿using ExpenseManagement.Api.Application.Common.Exceptions;
+using ExpenseManagement.Api.Application.DTOs;
 using ExpenseManagement.Api.Application.Features.Employee.Commands;
 using ExpenseManagement.Api.Domain.Entities;
 using ExpenseManagement.Api.Infrastructure.Persistence;
@@ -34,6 +35,21 @@ public class CreateEmployeeCommandHandler : IRequestHandler<CreateEmployeeComman
     
     public async Task<EmployeeDTO> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
     {
+        // Check if an employee with the same email already exists
+        var emailExists = await _employeeRepository.ExistsByEmailAsync(request.Email);
+        if (emailExists)
+        {
+            throw new ConflictException($"An employee with the email '{request.Email}' already exists.");
+        }
+        
+        // Check if an employee with the same phone number already exists
+        var phoneNumberExists = await _employeeRepository.ExistsByPhoneNumberAsync(request.PhoneNumber);
+        if (phoneNumberExists)
+        {
+            throw new ConflictException($"An employee with the phone number '{request.PhoneNumber}' already exists.");
+        }
+        
+        // Begin a new transaction
        _unitOfWork.BeginTransaction();
        try
        {
