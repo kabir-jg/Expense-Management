@@ -1,8 +1,9 @@
-﻿using ExpenseManagement.Api.Application.DTOs;
+﻿using ExpenseManagement.Api.Domain.Entities;
 
 namespace ExpenseManagement.Api.Infrastructure.Repositories.Interfaces;
 
 public interface IAuthRepository
-{
-    public Task<bool> EmailExistAsync(string email);
+{ 
+    Task<User?> GetUserByEmailAsync(string email);
+    
 }

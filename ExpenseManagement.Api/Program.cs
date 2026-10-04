@@ -1,9 +1,10 @@
 using System.Data;
 using ExpenseManagement.Api.Application.Mappings;
+using ExpenseManagement.Api.Infrastructure.Repositories.Interfaces;
 using ExpenseManagement.Api.Domain.Entities;
 using ExpenseManagement.Api.Infrastructure.Persistence;
 using ExpenseManagement.Api.Infrastructure.Repositories;
-using ExpenseManagement.Api.Infrastructure.Repositories.Interfaces;
+using ExpenseManagement.Api.Infrastructure.Services;
 using Mapster;
 using MapsterMapper;
 using Microsoft.AspNetCore.Identity;
@@ -23,6 +24,7 @@ builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 
 builder.Services.AddMediatR(cfg =>
 {

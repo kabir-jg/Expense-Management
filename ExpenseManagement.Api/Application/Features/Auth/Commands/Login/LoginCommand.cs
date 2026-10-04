@@ -1,6 +1,9 @@
-﻿namespace ExpenseManagement.Api.Application.Features.Auth.Commands.Login;
+﻿using ExpenseManagement.Api.Application.DTOs;
+using MediatR;
 
-public class LoginCommand
+namespace ExpenseManagement.Api.Application.Features.Auth.Commands.Login;
+
+public class LoginCommand: IRequest<AuthCredentialDTO>
 {
     public required string Email { get; set; }
     public required string Password { get; set; }
