@@ -3,6 +3,7 @@ using ExpenseManagement.Api.Application.Common.Behaviors;
 using ExpenseManagement.Api.Application.Mappings;
 using ExpenseManagement.Api.Infrastructure.Repositories.Interfaces;
 using ExpenseManagement.Api.Domain.Entities;
+using ExpenseManagement.Api.Infrastructure.Exceptions;
 using ExpenseManagement.Api.Infrastructure.Persistence;
 using ExpenseManagement.Api.Infrastructure.Repositories;
 using ExpenseManagement.Api.Infrastructure.Services;
@@ -37,6 +38,11 @@ builder.Services.AddMediatR(cfg =>
 // FluentValidation
 builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
 
+// Exception Handling
+
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
+
 
 // Mapster
 MapsterConfig.RegisterMappings();
@@ -65,6 +71,8 @@ if (app.Environment.IsDevelopment())
     app.MapScalarApiReference();
 }
 
+// Middlewares
+app.UseExceptionHandler();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
