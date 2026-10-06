@@ -52,7 +52,22 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
+    options.AddPolicy("CanCreateEmployee", policy =>
+    {
+        policy.RequireRole("Admin");
+    });
+    options.AddPolicy("CanViewEmployee", policy =>
+    {
+        policy.RequireRole("Admin", "Manager");
+    });
+    options.AddPolicy("CanUpdateEmployee", policy =>
+    {
+        policy.RequireRole("Admin", "Manager");
+    });
+    options.AddPolicy("CanDeleteEmployee", policy =>
+    {
+        policy.RequireRole("Admin");
+    });
 });
 
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();

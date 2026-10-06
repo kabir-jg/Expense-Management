@@ -93,4 +93,49 @@ public class EmployeeRepository : IEmployeeRepository
         var employees = await _dbConnection.QueryAsync<Employee>(sql);
         return employees.ToArray();
     }
+    
+    public async Task<Employee?> GetEmployeeByIdAsync(int id)
+    {
+        var sql = """
+                  SELECT * FROM Employees WHERE Id = @Id
+                  """;
+        var employee = await _dbConnection.QuerySingleOrDefaultAsync<Employee>(sql, new { Id = id });
+        return employee;
+    }
+    
+    public async Task<Employee> UpdateEmployeeAsync(Employee employee)
+    {
+        var sql = """
+                  UPDATE Employees
+                  SET FirstName = @FirstName,
+                      LastName = @LastName,
+                      Email = @Email,
+                      PhoneNumber = @PhoneNumber,
+                      Address = @Address,
+                      City = @City,
+                      State = @State,
+                      ZipCode = @ZipCode,
+                      Country = @Country,
+                      DateOfBirth = @DateOfBirth,
+                      Salary = @Salary,
+                      Position = @Position,
+                      DepartmentId = @DepartmentId,
+                      IsActive = @IsActive,
+                      UpdatedAt = @UpdatedAt,
+                      JoiningDate = @JoiningDate
+                  OUTPUT INSERTED.*
+                  WHERE Id = @Id;
+                  """;
+        var updatedEmployee = await _dbConnection.QuerySingleAsync<Employee>(sql, employee, transaction: _unitOfWork.Transaction);
+        return updatedEmployee;
+    }
+    
+    public async Task<bool> DeleteEmployeeAsync(int id)
+    {
+        var sql = """
+                  DELETE FROM Employees WHERE Id = @Id
+                  """;
+        var rowsAffected = await _dbConnection.ExecuteAsync(sql, new { Id = id }, transaction: _unitOfWork.Transaction);
+        return rowsAffected > 0;
+    }
 }

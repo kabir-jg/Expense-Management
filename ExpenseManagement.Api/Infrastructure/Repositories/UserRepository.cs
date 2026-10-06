@@ -43,4 +43,19 @@ public class UserRepository : IUserRepository
         user.Id = userId;
         return user;
     }
+    
+    public async Task<bool> DeleteUserByEmployeeIdAsync(int employeeId)
+    {
+        var sql = """
+                  DELETE FROM Users
+                  WHERE EmployeeId = @EmployeeId
+                  """;
+
+        var rowsAffected = await _dbConnection.ExecuteAsync(
+            sql,
+            new { EmployeeId = employeeId },
+            transaction: _unitOfWork.Transaction);
+
+        return rowsAffected > 0;
+    }
 }

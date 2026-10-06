@@ -8,4 +8,7 @@ public interface IEmployeeRepository
      Task<bool> ExistsByEmailAsync(string email);
      Task<bool> ExistsByPhoneNumberAsync(string phoneNumber);
      Task<Employee[]> GetAllEmployeesAsync();
+     Task<Employee?> GetEmployeeByIdAsync(int id);
+     Task<Employee> UpdateEmployeeAsync(Employee employee);
+     Task<bool> DeleteEmployeeAsync(int id);
 }
