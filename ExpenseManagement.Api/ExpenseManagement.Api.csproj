@@ -10,6 +10,7 @@
         <PackageReference Include="Daffer" Version="1.0.4" />
         <PackageReference Include="FluentValidation" Version="12.1.1" />
         <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.5" />
         <PackageReference Include="Mapster" Version="10.1.0-pre02" />
         <PackageReference Include="Mapster.DependencyInjection" Version="10.1.0-pre02" />
         <PackageReference Include="MediatR" Version="14.2.0" />
@@ -21,7 +22,6 @@
 
     <ItemGroup>
       <Folder Include="Application\Features\Auth\Commands\Logout\" />
-      <Folder Include="Application\Features\Employees\Queries\" />
     </ItemGroup>
 
 </Project>

@@ -95,7 +95,8 @@ public class GlobalExceptionHandler : IExceptionHandler
             StatusCodes.Status500InternalServerError;
 
         var serverErrorResponse = ApiResponse<object>.FailureResponse(
-            "An unexpected error occurred. Please try again later."
+            "An unexpected error occurred. Please try again later.",
+            new { ExceptionMessage = exception.Message }
         );
 
         await httpContext.Response.WriteAsJsonAsync(

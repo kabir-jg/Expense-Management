@@ -7,4 +7,5 @@ public interface IEmployeeRepository
      Task<Employee> CreateEmployeeAsync(Employee employee);
      Task<bool> ExistsByEmailAsync(string email);
      Task<bool> ExistsByPhoneNumberAsync(string phoneNumber);
+     Task<Employee[]> GetAllEmployeesAsync();
 }

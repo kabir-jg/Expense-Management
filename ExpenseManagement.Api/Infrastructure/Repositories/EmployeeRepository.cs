@@ -78,32 +78,19 @@ public class EmployeeRepository : IEmployeeRepository
       
       var employeeId = await _dbConnection.QuerySingleAsync<int>(
           sql,
-          new
-          {
-              employee.FirstName,
-              employee.LastName,
-              employee.Email,
-              employee.PhoneNumber,
-              employee.Address,
-              employee.City,
-              employee.State,
-              employee.ZipCode,
-              employee.Country,
-
-              DateOfBirth = employee.DateOfBirth.ToDateTime(TimeOnly.MinValue),
-
-              employee.Salary,
-              employee.Position,
-              employee.DepartmentId,
-              employee.IsActive,
-              employee.CreatedAt,
-              employee.UpdatedAt,
-
-              JoiningDate = employee.JoiningDate.ToDateTime(TimeOnly.MinValue)
-          },
+          employee,
           transaction: _unitOfWork.Transaction
       );
         employee.Id = employeeId;
         return employee;
+    }
+    
+    public async Task<Employee[]> GetAllEmployeesAsync()
+    {
+        var sql = """
+                  SELECT * FROM Employees
+                  """;
+        var employees = await _dbConnection.QueryAsync<Employee>(sql);
+        return employees.ToArray();
     }
 }
