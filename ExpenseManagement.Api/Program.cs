@@ -28,6 +28,7 @@ SqlMapper.AddTypeHandler(new DateOnlyTypeHandler());
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
+// JWT Authentication
 var jwtKey = builder.Configuration["Jwt:Key"]
     ?? throw new InvalidOperationException("JWT key is not configured.");
 var jwtIssuer = builder.Configuration["Jwt:Issuer"]
@@ -50,6 +51,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ClockSkew = TimeSpan.Zero
         };
     });
+
+// Role based authorization policies
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("CanCreateEmployee", policy =>
@@ -68,11 +71,29 @@ builder.Services.AddAuthorization(options =>
     {
         policy.RequireRole("Admin");
     });
+    options.AddPolicy("CanCreateDepartment", policy =>
+    {
+        policy.RequireRole("Admin");
+    });
+    options.AddPolicy("CanViewDepartment", policy =>
+    {
+        policy.RequireRole("Admin", "Manager");
+    });
+    options.AddPolicy("CanUpdateDepartment", policy =>
+    {
+        policy.RequireRole("Admin");
+    });
+    options.AddPolicy("CanDeleteDepartment", policy =>
+    {
+        policy.RequireRole("Admin");
+    });
 });
 
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+builder.Services.AddScoped<IDepartmentHeadRepository, DepartmentHeadRepository>();
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
