@@ -8,4 +8,5 @@ public interface IDepartmentHeadRepository
     public Task<DepartmentHead?> ExistsByEmployeeIdAsync(int employeeId);
     public Task<DepartmentHead?> GetByDepartmentIdAsync(int departmentId);
     public Task<DepartmentHead> UpdateDepartmentHeadAsync(DepartmentHead departmentHead);
+    public Task<bool> DeleteDepartmentHeadAsync(int departmentId);
 }

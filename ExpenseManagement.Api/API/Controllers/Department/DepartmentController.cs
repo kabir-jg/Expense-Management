@@ -59,4 +59,18 @@ public class DepartmentController : ControllerBase
         var response = ApiResponse<GetDepartmentDTO?>.SuccessResponse("Department retrieved successfully", result);
         return Ok(response);
     }
+
+    [HttpDelete("{id}")]
+    [Authorize(Policy = "CanDeleteDepartment")]
+    public async Task<IActionResult> DeleteDepartment(int id)
+    {
+        var result = await _mediator.Send(new DeleteDepartmentCommand { DepartmentId = id });
+        if (!result)
+        {
+            return NotFound(ApiResponse<object>.FailureResponse($"Department with ID {id} not found."));
+        }
+        
+        var response = ApiResponse<object>.SuccessResponse("Department deleted successfully", true);
+        return Ok(response);
+    }
 }

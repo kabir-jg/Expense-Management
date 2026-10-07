@@ -84,4 +84,13 @@ public class DepartmentRepository : IDepartmentRepository
         var departments = await _dbConnection.QueryAsync<GetDepartmentDTO>(sql);
         return departments.ToList();
     }
+    
+    public async Task<bool> DeleteDepartmentAsync(int departmentId)
+    {
+        var sql = """
+                  DELETE FROM Departments WHERE Id = @Id
+                  """;
+        var rowsAffected = await _dbConnection.ExecuteAsync(sql, new { Id = departmentId }, transaction: _unitOfWork.Transaction);
+        return rowsAffected > 0;
+    }
 }

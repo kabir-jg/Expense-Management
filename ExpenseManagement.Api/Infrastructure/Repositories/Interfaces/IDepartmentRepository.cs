@@ -9,4 +9,5 @@ public interface IDepartmentRepository
     public Task<Department> UpdateDepartmentAsync(Department department);
     public Task<GetDepartmentDTO?> GetDepartmentByIdAsync(int departmentId);
     public Task<List<GetDepartmentDTO>> GetDepartmentsAsync();
+    public Task<bool> DeleteDepartmentAsync(int departmentId);
 }

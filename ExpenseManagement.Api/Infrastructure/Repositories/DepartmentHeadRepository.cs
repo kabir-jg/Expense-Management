@@ -39,7 +39,7 @@ public class DepartmentHeadRepository : IDepartmentHeadRepository
     
     public async Task<DepartmentHead?> ExistsByEmployeeIdAsync(int employeeId)
     {
-        var sql = "SELECT * FROM DepartmentHeads WHERE EmployeeId = @EmployeeId";
+        var sql = """SELECT * FROM DepartmentHeads WHERE EmployeeId = @EmployeeId""";
         var departmentHead = await _dbConnection.QuerySingleOrDefaultAsync<DepartmentHead>(sql,
             new { EmployeeId = employeeId }, transaction: _unitOfWork.Transaction);
         return departmentHead;
@@ -62,5 +62,14 @@ public class DepartmentHeadRepository : IDepartmentHeadRepository
                 """;
         await _dbConnection.ExecuteAsync(sql, departmentHead, transaction: _unitOfWork.Transaction);
         return departmentHead;
+    }
+    
+    public async Task<bool> DeleteDepartmentHeadAsync(int departmentId)
+    {
+        var sql = """
+                  DELETE FROM DepartmentHeads WHERE DepartmentId = @DepartmentId
+                  """;
+        var rowsAffected = await _dbConnection.ExecuteAsync(sql, new { DepartmentId = departmentId }, transaction: _unitOfWork.Transaction);
+        return rowsAffected > 0;
     }
 }
