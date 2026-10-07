@@ -3,7 +3,6 @@ using ExpenseManagement.Api.Application.DTOs;
 using ExpenseManagement.Api.Domain.Entities;
 using ExpenseManagement.Api.Infrastructure.Persistence;
 using ExpenseManagement.Api.Infrastructure.Repositories.Interfaces;
-using MapsterMapper;
 using MediatR;
 
 namespace ExpenseManagement.Api.Application.Features.Departments.Commands;
@@ -12,20 +11,17 @@ public class UpdateDepartmentCommandHandler : IRequestHandler<UpdateDepartmentCo
 {
     private readonly IDepartmentRepository _departmentRepository;
     private readonly IDepartmentHeadRepository _departmentHeadRepository;
-    private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IEmployeeRepository _employeeRepository;
     
 
     public UpdateDepartmentCommandHandler(IDepartmentRepository departmentRepository, 
         IDepartmentHeadRepository departmentHeadRepository,
-        IMapper mapper, 
         IUnitOfWork unitOfWork, 
         IEmployeeRepository employeeRepository)
     {
         _departmentRepository = departmentRepository;
         _departmentHeadRepository = departmentHeadRepository;
-        _mapper = mapper;
         _unitOfWork = unitOfWork;
         _employeeRepository = employeeRepository;
     }

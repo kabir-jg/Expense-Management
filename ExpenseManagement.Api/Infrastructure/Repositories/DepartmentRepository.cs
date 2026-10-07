@@ -47,10 +47,22 @@ public class DepartmentRepository : IDepartmentRepository
         return department;
     }
     
-    public async Task<Department?> GetDepartmentByIdAsync(int departmentId)
+    public async Task<GetDepartmentDTO?> GetDepartmentByIdAsync(int departmentId)
     {
-        var sql = "SELECT * FROM Departments WHERE Id = @Id";
-        var department = await _dbConnection.QuerySingleOrDefaultAsync<Department>(sql, new { Id = departmentId },
+        var sql = """
+                           SELECT 
+                               d.Id,
+                               d.name,
+                               e.Id AS DepartmentHeadEmployeeId,
+                               e.FirstName + ' ' + e.LastName AS DepartmentHeadEmployeeName,
+                               e.Email AS DepartmentHeadEmployeeEmail,
+                               e.PhoneNumber AS DepartmentHeadEmployeePhone
+                           FROM Departments d
+                           LEFT JOIN DepartmentHeads dh ON d.Id = dh.DepartmentId
+                           LEFT JOIN Employees e ON dh.EmployeeId = e.Id
+                           WHERE d.Id = @Id
+                           """;
+        var department = await _dbConnection.QuerySingleOrDefaultAsync<GetDepartmentDTO>(sql, new { Id = departmentId },
             transaction: _unitOfWork.Transaction);
         return department;
     }

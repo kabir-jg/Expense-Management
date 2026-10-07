@@ -7,6 +7,6 @@ public interface IDepartmentRepository
 {
     public Task<Department> CreateDepartmentAsync(Department department);
     public Task<Department> UpdateDepartmentAsync(Department department);
-    public Task<Department?> GetDepartmentByIdAsync(int departmentId);
+    public Task<GetDepartmentDTO?> GetDepartmentByIdAsync(int departmentId);
     public Task<List<GetDepartmentDTO>> GetDepartmentsAsync();
 }

@@ -50,4 +50,13 @@ public class DepartmentController : ControllerBase
         var response = ApiResponse<List<GetDepartmentDTO>>.SuccessResponse("Departments retrieved successfully", result);
         return Ok(response);
     }
+    
+    [HttpGet("{id}")]
+    [Authorize (Policy = "CanViewDepartment")]
+    public async Task<IActionResult> GetDepartmentById(int id)
+    {
+       var result = await _mediator.Send(new GetDepartmentByIdQuery { DepartmentId = id });
+        var response = ApiResponse<GetDepartmentDTO?>.SuccessResponse("Department retrieved successfully", result);
+        return Ok(response);
+    }
 }
