@@ -1,6 +1,8 @@
 ﻿using ExpenseManagement.Api.Application.Common.Models;
 using ExpenseManagement.Api.Application.DTOs;
+using ExpenseManagement.Api.Application.Features.Employees.Queries;
 using ExpenseManagement.Api.Application.Features.Expenses.Commands;
+using ExpenseManagement.Api.Application.Features.Expenses.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -25,6 +27,16 @@ public class ExpenseController : ControllerBase
         var result = await _mediator.Send(command, token);
         return StatusCode(StatusCodes.Status201Created, ApiResponse<ExpenseDTO>.SuccessResponse(
             "Expense created successfully.", 
+            result));
+    }
+    
+    [HttpGet]
+    [Authorize (Policy = "CanViewExpense")]
+    public async Task<IActionResult> GetExpenses(CancellationToken token)
+    {
+       var result = await _mediator.Send(new GetExpensesQuery(), token);
+       return Ok(ApiResponse<ExpenseDTO[]>.SuccessResponse(
+            "Expenses retrieved successfully.", 
             result));
     }
 }
