@@ -87,6 +87,22 @@ builder.Services.AddAuthorization(options =>
     {
         policy.RequireRole("Admin");
     });
+    options.AddPolicy("CanCreateExpense", policy =>
+    {
+        policy.RequireRole("Admin", "Manager", "Employee");
+    });
+    options.AddPolicy("CanViewExpense", policy =>
+    {
+        policy.RequireRole("Admin", "Manager", "Employee");
+    });
+    options.AddPolicy("CanUpdateExpense", policy =>
+    {
+        policy.RequireRole("Admin", "Manager");
+    });
+    options.AddPolicy("CanDeleteExpense", policy =>
+    {
+        policy.RequireRole("Admin", "Manager");
+    });
 });
 
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
@@ -94,6 +110,9 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
 builder.Services.AddScoped<IDepartmentHeadRepository, DepartmentHeadRepository>();
+builder.Services.AddScoped<IExpenseRepository, ExpenseRepository>();
+builder.Services.AddScoped<IExpenseCategoryRepository, ExpenseCategoryRepository>();
+builder.Services.AddScoped<ILineItemRepository, LineItemRepository>();
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();

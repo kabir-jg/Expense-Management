@@ -22,6 +22,8 @@
 
     <ItemGroup>
       <Folder Include="Application\Features\Auth\Commands\Logout\" />
+      <Folder Include="Application\Features\ExpenseCategories\Queries\" />
+      <Folder Include="Application\Features\Expenses\Queries\" />
     </ItemGroup>
 
 </Project>

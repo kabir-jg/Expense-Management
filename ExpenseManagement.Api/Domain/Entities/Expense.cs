@@ -1,4 +1,6 @@
-﻿namespace ExpenseManagement.Api.Domain.Entities;
+﻿using ExpenseManagement.Api.Domain.Enums;
+
+namespace ExpenseManagement.Api.Domain.Entities;
 
 public class Expense
 {
@@ -7,9 +9,9 @@ public class Expense
     public string? Description { get; set; }
     public decimal InvoiceAmount { get; set; }
     public DateTime SubmittedAt { get; set; }
-    public DateTime UpdatedAt { get; set; }
+    public DateTime? UpdatedAt { get; set; }
     public int EmployeeId { get; set; }
-    public required string Status { get; set; }
+    public required ExpenseStatusEnum Status { get; set; }
     public int ExpenseCategoryId { get; set; }
     public int DepartmentId { get; set; }
 }
